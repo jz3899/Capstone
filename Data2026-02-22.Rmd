@@ -14,6 +14,7 @@ library(ggridges)
 library(ggplot2)
 library(modelr)
 library(mgcv)
+library(gtsummary)
 set.seed(1)
 knitr::opts_chunk$set(
   fig.width = 9,
@@ -43,5 +44,11 @@ wastewater = read.csv("./Data/wastewater.csv") %>%
          per_Sars_load = per_capita_sars_co_v_2_load_n1_copies_per_day_per_population) %>%
   select(-annotation)
 wastewater
+```
+
+```{r}
+wastewater_table = wastewater %>%
+  tbl_summary()
+wastewater_table
 ```
 
