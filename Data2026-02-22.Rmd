@@ -1,0 +1,47 @@
+---
+title: "Data analysis-2026/02/22"
+author: "Jicong Zhang"
+date: "2026-02-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(broom)
+library(ggridges)
+library(ggplot2)
+library(modelr)
+library(mgcv)
+set.seed(1)
+knitr::opts_chunk$set(
+  fig.width = 9,
+  fig.asp = .6,
+  out.width = "100%"
+)
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r}
+# Data input
+wastewater = read.csv("./Data/wastewater.csv") %>%
+  janitor::clean_names() %>%
+  rename(wrrf = wrrf_name,
+         abbreviation = wrrf_abbreviation,
+         concentration = concentration_sars_co_v_2_gene_target_n1_copies_l,
+         population = population_served_estimated,
+         per_Sars_load = per_capita_sars_co_v_2_load_n1_copies_per_day_per_population) %>%
+  select(-annotation)
+wastewater
+```
+
