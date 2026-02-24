@@ -14,6 +14,8 @@ library(ggridges)
 library(ggplot2)
 library(modelr)
 library(mgcv)
+library(dplyr)
+library(readr)
 library(gtsummary)
 set.seed(1)
 knitr::opts_chunk$set(
@@ -43,12 +45,40 @@ wastewater = read.csv("./Data/wastewater.csv") %>%
          population = population_served_estimated,
          per_Sars_load = per_capita_sars_co_v_2_load_n1_copies_per_day_per_population) %>%
   select(-annotation)
-wastewater
 ```
 
 ```{r}
-wastewater_table = wastewater %>%
-  tbl_summary()
-wastewater_table
+wastewater_clean = wastewater %>%
+  mutate(population = parse_number(population),
+         concentration = parse_number(concentration),
+         date = mdy(sample_date)) %>%
+  filter(!is.na(population),
+         !is.na(concentration),
+         !is.na(date)) %>%
+  select(date, wrrf, concentration, population) %>%
+  mutate(log_population = log(population))
+```
+
+```{r}
+# Create a descriptive_table
+descriptive_table = wastewater_clean %>%
+  select(-date) %>%
+   gtsummary::tbl_summary(statistic = list(all_continuous() ~ "{mean} ({sd}) {min} {max} {median}",
+                                          all_categorical() ~ "{p}%"))
+descriptive_table
+```
+
+```{r}
+# Scatter plots of concentration versus time
+con_pop_plot = wastewater_clean %>%
+  ggplot(aes(x = date, y = concentration)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth() +
+  theme_bw() +
+  labs(title = "Scatter plot of concentration versus time",
+       x= "Date",
+       y = "Concentration") +
+  scale_y_continuous(limits = c(0, 1250000))
+con_pop_plot
 ```
 
