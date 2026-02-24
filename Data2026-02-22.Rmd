@@ -70,7 +70,7 @@ descriptive_table
 
 ```{r}
 # Scatter plots of concentration versus time
-con_pop_plot = wastewater_clean %>%
+con_time_plot = wastewater_clean %>%
   ggplot(aes(x = date, y = concentration)) +
   geom_point(alpha = 0.6) +
   geom_smooth() +
@@ -79,6 +79,18 @@ con_pop_plot = wastewater_clean %>%
        x= "Date",
        y = "Concentration") +
   scale_y_continuous(limits = c(0, 1250000))
+con_time_plot
+```
+
+```{r}
+con_pop_plot = wastewater_clean %>%
+  ggplot(aes(x = population, y = concentration)) +
+  geom_point(alpha = 0.6) +
+  theme_bw() +
+  scale_y_continuous(limits = c(0, 1250000)) +
+  labs(title = "Scatter plot of concentration versus population",
+       x = "Population",
+       y = "Concentration")
 con_pop_plot
 ```
 
