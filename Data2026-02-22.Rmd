@@ -2,7 +2,7 @@
 title: "Data analysis-2026/02/22"
 author: "Jicong Zhang"
 date: "2026-02-23"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
